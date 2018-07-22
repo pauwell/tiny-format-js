@@ -8,12 +8,16 @@ let FORMAT_PRINT = (function(){
     console.log("Private function executed!");
   }
 
-  
+  myself.impublic = function(){
+    console.log("Public function executed!");
+  }
 
+  return myself;
 }());
 
 let table_print = (formatString, dataArray) => {
   // @Todo: Use regex to check if the formatting of the formatString is valid.
+  // @Todo: Check if one of the data values is too long for the specified cell width.
 
   // Get all blocks from the formatString.
   let blocks = formatString.split('|').filter(elem => elem.length > 0);
@@ -67,7 +71,7 @@ let table_print = (formatString, dataArray) => {
 
       // Fill in the data.
       let value = String(data[block.variable]);
-      let startIdx = (col.length / 2) - (value.length / 2);
+      let startIdx = block.align == 'l' ? 2 : (block.align == 'r' ? block.length - value.length : (col.length / 2) - (value.length / 2));
       columns.push(col.substr(0, startIdx) + value + col.substr(startIdx + value.length));
       });
   });
