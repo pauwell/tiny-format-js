@@ -9,14 +9,19 @@
 </head>
 <body>
   <script>
+    // Test data.
     let worker = [
-      { name: 'Hans', age: 55 },
-      { name: 'Hedwig', age: 25 },
-      { name: 'Bob', age: 35 }
+      { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper and much more ;)' },
+      { name: 'Hedwig', age: 25, height: 174, hobbies: 'I am a fireworks enthusiast.' },
+      { name: 'Bob', age: 35, height: 199, hobbies: 'Playing basketball n\' stuff' }
     ];
 
     // Print a table with all workers who's name start with a 'H'.
-    table_print("|<Age><age>c5* |<Name><name>r20*.|", worker.filter(e => e.name[0] === 'H'));  
+    let table = tinyFormat.formatTable(
+      "|<Name><name>c20*_|<Age><age>c5*_|<Height><height>c5*_|<Hobbies><hobbies>l30* |", 
+      worker.filter(e => e.name[0] === 'H')
+    );  
+    console.log(table);
   </script>
 </body>
 </html>

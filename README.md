@@ -55,7 +55,7 @@ To print the following:
 ```
 You just need to write:
 ```js
-table_print("|age%c5* |name%r20*.|");
+tablePrint("|age%c5* |name%r20*.|");
 ```
 Lets have a look at the the meaning of all that mess.
 ```
