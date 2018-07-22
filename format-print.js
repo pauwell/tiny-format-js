@@ -1,91 +1,73 @@
 "use strict"
 
-let FORMAT_PRINT = (function(){
+let tinyFormat = (function(){
 
+/*
+  ___private_________________________________________________________________________
+*/
   let myself = {};
-  
-  function imprivate(){
-    console.log("Private function executed!");
+
+  // Read the single components of a block and return them stored in an object.
+  function splitBlockComponents(block){
+    return { 
+      label:  block.split('<')[1].split('>')[0], 
+      variable: block.split('<')[2].split('>')[0], 
+      align: block.split('>')[2][0], 
+      length: block.split(/>./)[2].split('*')[0], 
+      char: block.split('*')[1][0]
+    };
   }
 
-  myself.impublic = function(){
-    console.log("Public function executed!");
+  // Combine the block and its value to create a formatted cell.
+  function buildCellFromBlock(block, value){
+    let col = '|';
+    for(let i=0; i<block.length; ++i){ col += block.char; }
+    col += '|';
+    value = String(value);
+    let startIdx = block.align == 'l' ? 2 : (block.align == 'r' ? block.length - value.length : (col.length / 2) - (value.length / 2));
+    return (col.substr(0, startIdx) + value + col.substr(startIdx + value.length));
+  }
+
+  // Attaches columns together in a single string.
+  function buildStringFromColumns(columns, dataArrayLength){  
+    let formatted = '';
+    for(let i=0; i<dataArrayLength + 1; ++i){
+      for(let j=i; j<columns.length; j += dataArrayLength + 1){
+        formatted += columns[j];
+      }
+      formatted += '\n';
+    }
+    return formatted;
+  }
+
+/*
+  ___public__________________________________________________________________________
+*/
+  myself.formatTable = function(formatString, dataArray){
+    // @Todo: Use regex to check if the formatting of the formatString is valid.
+    // @Todo: Check if one of the data values is too long for the specified cell width.
+
+    // Get all blocks from the formatString.
+    let blocks = formatString.split('|').filter(elem => elem.length > 0);
+    let parsedBlocks = [];
+    
+    // Split the blocks into their components.
+    blocks.forEach(block => {
+      parsedBlocks.push(splitBlockComponents(block));
+    });
+
+    // Build each column.
+    let columns = [];
+    parsedBlocks.forEach(block => {
+      columns.push(buildCellFromBlock(block, block.label)); // Create Label cell.
+      dataArray.forEach(data => { // Create data cells.
+        columns.push(buildCellFromBlock(block, data[block.variable]));
+      });
+    });
+
+    // Attach each column to the final string.
+    return buildStringFromColumns(columns, dataArray.length); 
   }
 
   return myself;
 }());
-
-let table_print = (formatString, dataArray) => {
-  // @Todo: Use regex to check if the formatting of the formatString is valid.
-  // @Todo: Check if one of the data values is too long for the specified cell width.
-
-  // Get all blocks from the formatString.
-  let blocks = formatString.split('|').filter(elem => elem.length > 0);
-  let parsedBlocks = [];
-  console.log(blocks);
-  
-  blocks.forEach(block => {
-    
-    // Layout: |<label><variable>[align][length]*[char]| 
-    let label = block.split('<')[1].split('>')[0];
-    let variable = block.split('<')[2].split('>')[0];
-    let align = block.split('>')[2][0];
-    let length = block.split(/>./)[2].split('*')[0];
-    let char = block.split('*')[1][0];
-
-    parsedBlocks.push({ 
-      label:  label, 
-      variable: variable, 
-      align: align, 
-      length: length, 
-      char: char 
-    });
-
-    console.log("label: " + label);
-    console.log("variable: " + variable);
-    console.log("align: " + align);
-    console.log("length: " + length);
-    console.log("char: " + char);
-  });
-
-  // Build each column.
-  let columns = [];
-  parsedBlocks.forEach(block => {
-
-    // Build label.
-    let col = '|';
-    for(let i=0; i<block.length; ++i){ col += block.char; }
-    col += '|';
-    let value = block.label;
-    let startIdx = (col.length / 2) - (value.length / 2);
-    columns.push(col.substr(0, startIdx) + value + col.substr(startIdx + value.length));
-
-
-    dataArray.forEach(data => {
-      console.log(data[block.variable]);
-
-      // Build raw.
-      let col = '|';
-      for(let i=0; i<block.length; ++i){ col += block.char; }
-      col += '|';
-
-      // Fill in the data.
-      let value = String(data[block.variable]);
-      let startIdx = block.align == 'l' ? 2 : (block.align == 'r' ? block.length - value.length : (col.length / 2) - (value.length / 2));
-      columns.push(col.substr(0, startIdx) + value + col.substr(startIdx + value.length));
-      });
-  });
-  console.log(columns);
-
-  // Attach each column to the final string.
-  let formatted = '';
-  for(let i=0; i<dataArray.length + 1; ++i){
-    for(let j=i; j<columns.length; j += dataArray.length + 1){
-      formatted += columns[j];
-    }
-    formatted += '\n';
-  }
-  console.log(formatted);
-
-  return formatted;
-}
