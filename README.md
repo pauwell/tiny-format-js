@@ -1,69 +1,97 @@
 # Tiny Format Js
 
-
-## Table print     
+## Table print
 
 This is our set of data:
 
 ```js
-let data = [
-    {id: 0, name: "Sebastian", age: 99},
-    {id: 1, name: "Bob", age: 5},
-    {id: 2, name: "Peter", age: 45}
+let worker = [
+      { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper' },
+      { name: 'Hedwig', age: 25, height: 174, hobbies: 'I am a fireworks enthusiast.' },
+      { name: 'Anton', age: 35, height: 199, hobbies: 'Playing basketball.' },
+    ];
 ];
 ```
-Our goal is to create a table that looks like this:
+
+Our output looks like this:
 
 ```
-+-----+--------------+-------+
-| ID  | Name         | Age   |
-+-----+--------------+-------+
-|  0  | Sebastian    |  99   |
-+-----+--------------+-------+
-|  1  | Bob          |  25   |
-+-----+--------------+-------+
-|  2  | Anna         |  45   |
-+-----+--------------+-------+
-```
-Every print-statement consists of a block and a delimiter.
-
-Delimiters are used as boundaries for the inner blocks.
-The following is a set of blocks with delimiters.
-(Delimiter: '|', Block: 'XXXX'):
-
-```
-  ID (name)  (age)
-|XXXX|XXXXXXX|XXXXXXX|
++---------+----+--------+-------------------------------------------------------+
+| name    | age| height | hobbies                                               |
++---------+----+--------+-------------------------------------------------------+
+| Hans    | 55 | 160    | Golfing, reading the newspaper.                       |
++---------+----+--------+-------------------------------------------------------+
+| Hedwig  | 25 | 174    | I am a fireworks enthusiast.                          |
++---------+----+--------+-------------------------------------------------------+
+| Anton   | 35 | 199    | Playing basketball.                                   |
++---------+----+--------+-------------------------------------------------------+
 ```
 
-Delimiters are always(!) one character in length. They can be a space
-but no newlines for example. Every delimiter knows its distance from
-the last one. The length of the block between the delimiters subtracted
-from their distance is needed to calculate the necessary number of filler
-characters.
-Furthermore the user can design wether to align the content of the block 
-left, right or centered between the delimiters.
+And the statement we used to create it, looks like this:
 
-
-
-## The following is unfinished:
-
-Idea for syntax:
-To print the following:
-```
-| 99  |..........Sebastian.|
-```
-You just need to write:
 ```js
-tablePrint("|age%c5* |name%r20*.|");
+let table = tinyFormat.formatTableAuto(worker);
 ```
-Lets have a look at the the meaning of all that mess.
+
+It is also possible to specify the labels and cells more accurate. To achieve this, we use
+a string template that might look weird at first but is actually really simple and explicit:
+
+```js
+let table = tinyFormat.formatTable(
+  "|<Name><name>l15* |<Age><age>c6* |<Height><height>c8* |<Hobbies><hobbies>l40* |",
+  worker,
+  true
+);
+```
+
+The template consists of blocks that represent a column. The bounds of each block is marked by a '|'.
+A single block looks like this:
+
+```
+|<label><variable>[c,r,l][sz]*[char]|
+```
+
+These are the meanings of all the symbols:
+
 ```
 |    : Delimiter
 age  : Identifier
 %    : Starts modifier section
 c,r,l: Adjust to the (l)eft, (r)ight & (c)enter
 5*_  : Sets the field-width and fills it with the character '_'.
-
-|<label><variable>[c,r,l][sz]*[char]|
 ```
+
+It is also possible to convert your created tables to html:
+
+```js
+let htmlTable = tinyFormat.convertTableToHtml(table2);
+```
+
+Output:
+
+<table>
+    <tr>
+        <th> name </th>
+        <th> age</th>
+        <th> height </th>
+        <th> hobbies </th>
+    </tr>
+    <tr>
+        <td> Hans </td>
+        <td> 55 </td>
+        <td> 160 </td>
+        <td> Golfing, reading the newspaper. </td>
+    </tr>
+    <tr>
+        <td> Hedwig </td>
+        <td> 25 </td>
+        <td> 174 </td>
+        <td> I am a fireworks enthusiast. </td>
+    </tr>
+    <tr>
+        <td> Anton </td>
+        <td> 35 </td>
+        <td> 199 </td>
+        <td> Playing basketball. </td>
+    </tr>
+</table>
