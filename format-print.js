@@ -67,13 +67,19 @@ let tinyFormat = (function(){
         newLength = dataValue.length + 2; // +2 is needed to not overlap the bounds.
       }
     });
+    // If the label is longer than the values.
+    if(String(blockComponents.label).length > newLength){
+      newLength = String(blockComponents.label).length + 2;
+    }
     return newLength;
   }
 
 /*
   ___public__________________________________________________________________________
 */
-  myself.formatTable = function(formatString, dataArray, showHidden=false){
+  // Create a table from a set of data with a string that determines the format of the cells.
+  // If showHidden is set to true, the cells expand to fit their data if their content is too big.
+  myself.formatTable = function(formatString, dataArray, showHidden=true){
 
     // Get all blocks from the formatString.
     let blocks = formatString.split('|').filter(elem => elem.length > 0);
@@ -86,7 +92,7 @@ let tinyFormat = (function(){
     blocks.forEach(block => {
       if(validBlockFormatRegex.test(block) === false){
         console.error(`Error in block "${block}"! A block should look like this: |<Label><variable>c20*_|. For more information, please read the documentation.`);
-        return 'Failed';
+        return 'Failed!';
       }
 
       let blockComponents = splitBlockComponents(block);
@@ -112,6 +118,46 @@ let tinyFormat = (function(){
     let finalString = buildStringFromColumns(columns, dataArray.length);
 
     return finalString; 
+  }
+
+  // Create a table without specifying the format and the labels.
+  myself.formatTableAuto = function(dataArray, showHidden=true){
+
+    let formatString = '';
+    for(let key in dataArray[0]){
+      if(dataArray[0].hasOwnProperty(key)){
+        formatString += `|<${key}><${key}>l1* `;
+      }
+    }
+    formatString += '|';
+
+    return this.formatTable(formatString, dataArray, showHidden);
+  }
+
+  // Take a finished table and convert it to a html representation.
+  myself.convertTableToHtml = function(table){
+    let htmlTable = '<table>';
+    
+    // Get a list of the width of each column.
+    let cellSizes = table.split('\n')[0].split('+').filter((e) => e.length != 0).map((e) => e.length)
+    console.log(cellSizes);
+
+    // Go through each row that has content.
+    table.split('\n').filter((e, idx, arr) => idx % 2 !== 0).forEach((tableRow, index, array) => {
+      htmlTable += '<tr>';
+      let atLength = 1;
+      cellSizes.forEach((cellSize, idx, arr) => {
+        let cell = tableRow.substr(atLength, cellSize);
+        atLength += cellSize + 1;
+        htmlTable += index === 0 ? `<th>${cell}</th>` : `<td>${cell}</td>`;
+      });
+      htmlTable += '</tr>';
+      console.log(tableRow);
+    });
+
+    htmlTable += '</table>';
+    console.log(htmlTable);
+    return htmlTable;
   }
 
   return myself;

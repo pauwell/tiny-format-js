@@ -8,6 +8,7 @@
   <script src="format-print.js"></script>
 </head>
 <body>
+  <div id="table-output"></div>
   <script>
     // Test data.
     let worker = [
@@ -26,10 +27,16 @@
       true
     );  
 
-    // @ Todo: Create method 'autoTable(dataArray, showFull=true)' that prints a table only from a data array.
-    //          If showFull is true the content is not cut at a specific size.
+    let table2 = tinyFormat.formatTableAuto(worker);
+    let htmlTable = tinyFormat.convertTableToHtml(table2);
+
     console.log(worker);
+    console.log("Table with workers:");
     console.log(table); 
+    console.log("Auto generated table:")
+    console.log(table2); 
+
+    document.getElementById("table-output").innerHTML = htmlTable;
   </script>
 </body>
 </html>
