@@ -13,15 +13,23 @@
     let worker = [
       { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper and much more ;)' },
       { name: 'Hedwig', age: 25, height: 174, hobbies: 'I am a fireworks enthusiast.' },
-      { name: 'Bob', age: 35, height: 199, hobbies: 'Playing basketball n\' stuff' }
+      { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper and much more ;)' },
+      { name: 'Anton', age: 35, height: 199, hobbies: 'Playing basketball n\' stuff' },
+      { name: 'Harry', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper and much much  more ;)' },
+      { name: 'Bertram', age: 35, height: 199, hobbies: 'Playing basketball n\' stuff' }
     ];
 
     // Print a table with all workers who's name start with a 'H'.
     let table = tinyFormat.formatTable(
-      "|<Name><name>c20*_|<Age><age>c5*_|<Height><height>c5*_|<Hobbies><hobbies>l30* |", 
-      worker.filter(e => e.name[0] === 'H')
+      "|<Name><name>l15* |<Age><age>c6* |<Height><height>c8* |<Hobbies><hobbies>l40* |", 
+      worker.filter(e => e.name[0] === 'H' || e.name[0] === 'B'),
+      true
     );  
-    console.log(table);
+
+    // @ Todo: Create method 'autoTable(dataArray, showFull=true)' that prints a table only from a data array.
+    //          If showFull is true the content is not cut at a specific size.
+    console.log(worker);
+    console.log(table); 
   </script>
 </body>
 </html>
