@@ -16,6 +16,14 @@
     .mdl-card--expand{
       flex-grow: inherit;
     }
+    #table-output{
+      text-align: center;
+    }
+    #html-table-output{
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+    }
   </style>
 </head>
 <body>
@@ -59,7 +67,14 @@
               </div>
               <pre><code class="javascript" id="statement-input"></code></pre>            
               <div class="mdl-card__actions mdl-card--border">
-                <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-upgraded=",MaterialButton,MaterialRipple">Open project in github<span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></a>
+                <a
+                  target="_blank" 
+                  href="https://github.com/pauwell/tiny-format-js/blob/master/README.md" 
+                  class="mdl-button mdl-js-button mdl-js-ripple-effect" 
+                  data-upgraded=",MaterialButton,MaterialRipple"
+                >
+                  More on Github<span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span>
+                </a>
               </div>
             </div>
 
@@ -72,7 +87,6 @@
                   <code>|&lt;label&gt;&lt;variable&gt;[c,r,l][sz]*[char]|</code>
                   <ul>
                     <li>|    : Delimiter</li>
-                    <li>age  : Identifier</li>
                     <li>c,r,l: Adjust to the (l)eft, (r)ight & (c)enter</li>
                     <li>sz   : Length of  the cells.</li>
                     <li>char : This char gets filled in the empty spaces in the block.</li>
