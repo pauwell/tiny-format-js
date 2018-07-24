@@ -48,18 +48,40 @@ The template consists of blocks that represent a column. The bounds of each bloc
 A single block looks like this:
 
 ```
-|<label><variable>[c,r,l][sz]*[char]|
+|[<label>][<variable>][c,r,l][sz]*[char]|
 ```
 
 These are the meanings of all the symbols:
 
 ```
-|    : Delimiter
-age  : Identifier
-%    : Starts modifier section
-c,r,l: Adjust to the (l)eft, (r)ight & (c)enter
-5*_  : Sets the field-width and fills it with the character '_'.
+|       : Delimiter
+label   : Is shown on top of the column
+variable: The name of the property inside the data set.
+c,r,l   : Adjust to the (l)eft, (r)ight & (c)enter
+sz      : Length of  the cells.
+char    : This char gets filled in the empty spaces in the block.
 ```
+Examples:
+<ul>
+    <li><p><code>|&lt;Size in meter&gt;&lt;size_m&gt;c15*.|</code></p>
+        <ul type="a">
+            <li>Label: "Size in meter"</li>
+            <li>Variable: "size_m"</li>
+            <li>Adjustment: "(c)enter"</li>
+            <li>Cell width: 15</li>
+            <li>Fill whitespace with: "."</li>
+        </ul>
+    </li>
+     <li><p><code>|&lt;Price per Hour&gt;&lt;pricePerHour&gt;l10* |</code></p>
+        <ul type="a">
+            <li>Label: "Price per Hour"</li>
+            <li>Variable: "pricePerHour"</li>
+            <li>Adjustment: "(l)eft"</li>
+            <li>Cell width: 10</li>
+            <li>Fill whitespace with: " "</li>
+        </ul>
+    </li>
+</ul>
 
 It is also possible to convert your created tables to html:
 
