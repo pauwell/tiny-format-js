@@ -1,6 +1,6 @@
 # Tiny Format Js
 
-## Table print
+## Format Tables
 
 This is our set of data:
 
