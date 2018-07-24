@@ -5,38 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Format print</title>
-  <script src="format-print.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"><!-- MDL -->
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.yellow-blue.min.css" /><!-- MDL -->
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script><!-- MDL -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"><!-- Highlight js code. -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script> <!-- Highlight js code. -->
+  <script>hljs.initHighlightingOnLoad();</script><!-- Highlight js code. -->
+  <script src="format-print.js"></script><!-- Print formatted table. -->
+  <style>
+    .mdl-card--expand{
+      flex-grow: inherit;
+    }
+  </style>
 </head>
 <body>
-  <div id="table-output"></div>
+  <!-- Simple header with fixed tabs. -->
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">&#x1F425; tiny js</span>
+      </div>
+      <!-- Tabs -->
+      <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+        <a href="#tiny-format-tab" class="mdl-layout__tab is-active">Tiny Format</a>
+        <a href="#fixed-tab-2" class="mdl-layout__tab">Tiny Templates</a>
+        <a href="#fixed-tab-3" class="mdl-layout__tab">Tiny DOM</a>
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Title</span>
+    </div>
+    <main class="mdl-layout__content">
+      <section class="mdl-layout__tab-panel is-active" id="tiny-format-tab">
+        <div class="page-content">
+          <!--
+            Tiny format examples.
+          -->
+          <div class="mdl-grid demo-content">
+            <h1>Tiny format js</h1>
+            <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+              <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                <div class="mdl-card__title mdl-card--expand mdl-color--blue-300">
+                  <h2 class="mdl-card__title-text">Example "worker" data</h2>
+                </div>
+                <pre><code class="javascript" id="data-input"></code></pre>
+              </div> 
+            </div>
+
+            <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
+              <div class="mdl-card__title mdl-card--expand mdl-color--blue-300">
+                <h2 class="mdl-card__title-text">Statements</h2>
+              </div>
+              <pre><code class="javascript" id="statement-input"></code></pre>            
+              <div class="mdl-card__actions mdl-card--border">
+                <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-upgraded=",MaterialButton,MaterialRipple">Open project in github<span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span></a>
+              </div>
+            </div>
+
+            <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+              <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+                <div class="mdl-card__title mdl-card--expand mdl-color--blue-300">
+                  <h2 class="mdl-card__title-text">Block syntax</h2>
+                </div>
+                <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                  <code>|&lt;label&gt;&lt;variable&gt;[c,r,l][sz]*[char]|</code>
+                  <ul>
+                    <li>|    : Delimiter</li>
+                    <li>age  : Identifier</li>
+                    <li>c,r,l: Adjust to the (l)eft, (r)ight & (c)enter</li>
+                    <li>sz   : Length of  the cells.</li>
+                    <li>char : This char gets filled in the empty spaces in the block.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
+
+              <div class="mdl-card__title mdl-card--expand mdl-color--blue-300">
+                <h2 class="mdl-card__title-text">Output as ascii table</h2>
+              </div>
+              <div class="mdl-card__supporting-text">
+                <pre><code id="table-output"></code></pre>
+              </div>
+            </div>
+
+            <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
+              
+              <div class="mdl-card__title mdl-card--expand mdl-color--blue-300">
+                <h2 class="mdl-card__title-text">Convert table to HTML</h2>
+              </div>
+              <div class="mdl-card__supporting-text">
+                <pre><code class="javascript" id="html-table-output"></code></pre>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+      <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+        <div class="page-content"><!-- Your content goes here --></div>
+      </section>
+      <section class="mdl-layout__tab-panel" id="fixed-tab-3">
+        <div class="page-content"><!-- Your content goes here --></div>
+      </section>
+
+    </main>
+  </div>
+
+  
   <script>
     // Test data.
     let worker = [
-      { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper and much more ;)' },
+      { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper.' },
       { name: 'Hedwig', age: 25, height: 174, hobbies: 'I am a fireworks enthusiast.' },
-      { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper and much more ;)' },
-      { name: 'Anton', age: 35, height: 199, hobbies: 'Playing basketball n\' stuff' },
-      { name: 'Harry', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper and much much  more ;)' },
-      { name: 'Bertram', age: 35, height: 199, hobbies: 'Playing basketball n\' stuff' }
+      { name: 'Hans', age: 32, height: 160, hobbies: 'Watching movies.' },
+      { name: 'Anton', age: 35, height: 199, hobbies: 'Playing basketball.' },
+      { name: 'Harry', age: 55, height: 171, hobbies: 'Biking, Hiking and Kiting.' },
+      { name: 'Bertram', age: 35, height: 197, hobbies: 'Playing basketball.' }
     ];
 
-    // Print a table with all workers who's name start with a 'H'.
+    // Display test data.
+    worker.forEach(e => {
+      document.getElementById('data-input').innerHTML += JSON.stringify(e) + '\n';
+    });
+
+    // Show statement.
+    document.getElementById("statement-input").innerHTML = `let table = tinyFormat.formatTable(
+  "|&lt;Name&gt;&lt;name&gt;l15* |<Age><age>c6* |<Height><height>c8* |<Hobbies><hobbies>l40* |", worker, true
+);
+let autoTable = tinyFormat.formatTableAuto(worker);
+let htmlTable = tinyFormat.convertTableToHtml(autoTable);`;
+
+    // Print a table with specific workers.
     let table = tinyFormat.formatTable(
       "|<Name><name>l15* |<Age><age>c6* |<Height><height>c8* |<Hobbies><hobbies>l40* |", 
       worker.filter(e => e.name[0] === 'H' || e.name[0] === 'B'),
       true
     );  
 
+    // Display formatted test data.
     let table2 = tinyFormat.formatTableAuto(worker);
     let htmlTable = tinyFormat.convertTableToHtml(table2);
 
-    console.log(worker);
-    console.log("Table with workers:");
-    console.log(table); 
-    console.log("Auto generated table:")
-    console.log(table2); 
-
-    document.getElementById("table-output").innerHTML = htmlTable;
+    // Insert into example.
+    document.getElementById("table-output").innerHTML = table2;
+    document.getElementById("html-table-output").innerHTML = htmlTable;
+    document.getElementById("html-table-output").getElementsByTagName("table")[0].classList.add('mdl-data-table');
   </script>
 </body>
 </html>
