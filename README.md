@@ -2,7 +2,10 @@
 
 ## Format Tables
 
-This is our set of data:
+TinyFormatJs is a tiny vanilla javascript library that lets you input some data and 
+returns this data formatted as a table or tree. (Right now only tables are supported).
+Let's look at an example to see how it works. 
+First, we need our set of data:
 
 ```js
 let worker = [
@@ -13,7 +16,13 @@ let worker = [
 ];
 ```
 
-Our output looks like this:
+Then we call the <code>formatTableAuto</code> method to parse our worker-set: 
+
+```js
+let table = tinyFormat.formatTableAuto(worker);
+```
+
+After the parsing is done, our local variable <code>table</code> now contains the following string:
 
 ```
 +---------+----+--------+-------------------------------------------------------+
@@ -26,15 +35,10 @@ Our output looks like this:
 | Anton   | 35 | 199    | Playing basketball.                                   |
 +---------+----+--------+-------------------------------------------------------+
 ```
-
-And the statement we used to create it, looks like this:
-
-```js
-let table = tinyFormat.formatTableAuto(worker);
-```
-
-It is also possible to specify the labels and cells more accurate. To achieve this, we use
-a string template that might look weird at first but is actually really simple and explicit:
+Maybe you noticed the <code>Auto</code> in the name of the method <code>formatTableAuto</code>.
+Of course there is also a method that lets you specify the look of the table more specific.
+To achieve this we use a custom template string that lets you accurately describe how the 
+labels and cells should appear. Let's have a look at it:
 
 ```js
 let table = tinyFormat.formatTable(
@@ -44,8 +48,8 @@ let table = tinyFormat.formatTable(
 );
 ```
 
-The template consists of blocks that represent a column. The bounds of each block is marked by a '|'.
-A single block looks like this:
+The template consists of blocks. Each of these blocks represent a column. The bounds of each block is marked by a '|'.
+A single block is structured like this:
 
 ```
 |[<label>][<variable>][c,r,l][sz]*[char]|
@@ -54,12 +58,12 @@ A single block looks like this:
 These are the meanings of all the symbols:
 
 ```
-|       : Delimiter
-label   : Is shown on top of the column
+|       : Delimiter of the block.
+label   : Is shown on top of the column as a header.
 variable: The name of the property inside the data set.
-c,r,l   : Adjust to the (l)eft, (r)ight & (c)enter
+l,r,c   : Adjust to the (l)eft, (r)ight & (c)enter
 sz      : Length of  the cells.
-char    : This char gets filled in the empty spaces in the block.
+char    : This fills the empty spaces in the block.
 ```
 Examples:
 <ul>
@@ -83,10 +87,10 @@ Examples:
     </li>
 </ul>
 
-It is also possible to convert your created tables to html:
+Of course it is also possible to convert your created tables to html:
 
 ```js
-let htmlTable = tinyFormat.convertTableToHtml(table2);
+let htmlTable = tinyFormat.convertTableToHtml(table);
 ```
 
 Output:
