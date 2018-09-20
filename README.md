@@ -12,7 +12,6 @@ let worker = [
       { name: 'Hans', age: 55, height: 160, hobbies: 'Golfing, reading the newspaper' },
       { name: 'Hedwig', age: 25, height: 174, hobbies: 'I am a fireworks enthusiast.' },
       { name: 'Anton', age: 35, height: 199, hobbies: 'Playing basketball.' },
-    ];
 ];
 ```
 
